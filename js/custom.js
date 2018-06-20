@@ -30,6 +30,7 @@
 
 // Global variable
 API_ENDPOINT = 'https://api.github.com/';
+TOKEN = 'token <token>';
 
 $(document).ready(function() {
   localStorage.removeItem('repo');
@@ -60,7 +61,7 @@ $('#createIssueButton').click(function() {
 function getUserRepo(username) {
   $.ajax({
     url: API_ENDPOINT + 'users/' + username + '/repos',
-    headers: { 'Authorization': 'token 60ca3a4c2f0b6c9902aa7f9bb0cc2fc8300cb2f0' },
+    headers: { 'Authorization': TOKEN },
     success: function (response) {
       localStorage.setItem('username', username);
       // Format the data
@@ -127,7 +128,7 @@ function createIssue() {
   $.ajax({
     type: 'POST',
     url: API_ENDPOINT + 'repos/' + username + '/' + repoName + '/issues',
-    headers: { 'Authorization': 'token 60ca3a4c2f0b6c9902aa7f9bb0cc2fc8300cb2f0' },
+    headers: { 'Authorization': TOKEN },
     data: JSON.stringify({
       title: title, 
       body: body
