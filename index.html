@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -12,6 +10,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
@@ -23,7 +22,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">StackRoute - Github</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -37,10 +36,20 @@
       </div>
     </nav>
 
-    <header class="bg-primary text-white">
-      <div class="container text-center">
-        <h1>StackRoute - Github</h1>
-        <p class="lead">Search Github users repositories and log issue.</p>
+    <header class="bg-light-blue">
+      <div class="container">
+        <h1 class="text-center">StackRoute - Github</h1>
+        <p class="lead text-center">Search Github users repositories and log issue.</p>
+          <!-- Text input-->
+          <div class="form-group">
+            <div class="col-md-4 input-container">
+              <input id="username" name="username" type="text" placeholder="username" class="form-control input-md" required>
+              <span class="error d-none">Error</span>  
+            </div>
+            <div class="col-md-4">
+              <button id="getUser" name="getUser" class="btn btn-success">Go</button>
+            </div>
+          </div>     
       </div>
     </header>
 
@@ -48,10 +57,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <h2>List</h2>
-            <p class="lead">List of repositories:</p>
-            <ul>
-            </ul>
+            <h2>List of Repository</h2>
+            <p>Please enter github username and submit to see the repository list.</p>
+            <table id="userRepoList" class="d-none" width="100%"></table>
           </div>
         </div>
       </div>
@@ -76,12 +84,43 @@
       <!-- /.container -->
     </footer>
 
+    <!-- Modal -->
+  <div id="createIssue" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="d-none success" id="success"></div>
+          <div class="form-group">
+            <div class="col-md-4 input-container">
+              <input id="title" name="title" type="text" placeholder="Issue Title" class="form-control input-md" required>
+              <span class="terror d-none">Error</span>
+              <br/>
+              <input id="body" name="body" type="text" placeholder="Description" class="form-control input-md" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="createIssueButton" name="createIssueButton" class="btn btn-success">Create</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
 
     <!-- Custom JavaScript for this theme -->
     <script src="js/custom.js"></script>

@@ -1,13 +1,37 @@
 header {
-  padding: 154px 0 100px;
+  padding: 80px 0 25px
 }
 
 @media (min-width: 992px) {
   header {
-    padding: 156px 0 100px;
+    padding: 80px 0 25px
   }
 }
 
 section {
-  padding: 150px 0;
+  padding: 50px 0;
+}
+
+.form-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#createIssue .form-group {
+  justify-content: center;
+}
+
+.form-group .error, .form-group .terror {
+  color: red;
+}
+#createIssue .success {
+  color: green;
+  padding-bottom: 10px;
+  font-weight: 500;
+}
+.input-container {
+  padding: 0;
+}
+.bg-light-blue {
+  background-color: #ADD8E6!important;
 }
