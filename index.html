@@ -31,18 +31,22 @@
         <h1 class="text-center">StackRoute - Github</h1>
         <p class="lead text-center">Search Github users repositories and log issue.</p>
           <!-- Text input-->
-          <div class="form-group">
+          <div class="row">
             <div class="col-md-4 input-container">
               <input id="username" name="username" type="text" placeholder="username" class="form-control input-md" required>
               <input id="password" name="password" type="password" placeholder="password" class="form-control input-md" required>
               <input id="gitusername" name="gitusername" type="text" placeholder="Search any user" class="form-control input-md" required>
               <span class="error d-none">Error</span>  
+              <br/>
+              <div class="text-center">
+                <button id="getUser" name="getUser" class="btn btn-success">Go</button>
+              </div>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <button id="getUser" name="getUser" class="btn btn-success">Go</button>
-            </div>
-          </div>     
-      </div>
+            </div> -->
+          </div>
+    </div>
     </header>
 
     <section id="about">
