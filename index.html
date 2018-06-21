@@ -34,6 +34,8 @@
           <div class="form-group">
             <div class="col-md-4 input-container">
               <input id="username" name="username" type="text" placeholder="username" class="form-control input-md" required>
+              <input id="password" name="password" type="password" placeholder="password" class="form-control input-md" required>
+              <input id="gitusername" name="gitusername" type="text" placeholder="Search any user" class="form-control input-md" required>
               <span class="error d-none">Error</span>  
             </div>
             <div class="col-md-4">
@@ -47,7 +49,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <h2>List of Repository</h2>
+            <h2>Repository <span id="repoUser"></span></h2>
             <p>Please enter github username and submit to see the repository list.</p>
             <table id="userRepoList" class="d-none" width="100%"></table>
           </div>

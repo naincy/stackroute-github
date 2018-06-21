@@ -30,23 +30,32 @@
 
 // Global variable
 API_ENDPOINT = 'https://api.github.com/';
-TOKEN = 'token <token>';
 
 $(document).ready(function() {
   localStorage.removeItem('repo');
   localStorage.removeItem('username');
+  localStorage.removeItem('access_token');
 });
+
 // Handle calls to Github
 $('#getUser').click(function() {
   var username = $('#username').val();
-  if (username) {
+  var password = $('#password').val();
+  var search = ($('#gitusername').val()) ? $('#gitusername').val() : username;
+  if (username && password) {
     $('.error').removeClass('d-block').addClass('d-none').html('');
-    getUserRepo(username);
+    $('#repoUser').html('of ' + username);
+    localStorage.setItem('username', username);
+    if (! localStorage.getItem('access_token'))
+      createToken(username, password, search);
+    else
+      getUserRepo(search);
   }
   else {
-    $('.error').removeClass('d-none').addClass('d-block').html('Please enter any github username.');
+    $('.error').removeClass('d-none').addClass('d-block').html('Please enter github credentials.');
   }
 });
+
 $('#createIssueButton').click(function() {
   var title = $('#title').val();
   if (title) {
@@ -58,12 +67,32 @@ $('#createIssueButton').click(function() {
   }
 });
 
-function getUserRepo(username) {
+function createToken(username, password, search) {
+  // Create Token
+  var s = username+':'+password;
+  var tokenName = Math.random().toString(36).substring(2, 15);
+  $.ajax({ 
+    url: API_ENDPOINT + 'authorizations',
+    type: 'POST',
+    beforeSend: function(xhr) { 
+      xhr.setRequestHeader("Authorization", "Basic " + btoa(s));
+    },
+    data: JSON.stringify({
+      scopes: ["repo"], 
+      note: tokenName
+    }),
+  }).done(function(response) {
+      localStorage.setItem('access_token', 'token ' + response.token);
+      getUserRepo(search);
+  });
+
+  return false;
+}
+function getUserRepo(search) {
   $.ajax({
-    url: API_ENDPOINT + 'users/' + username + '/repos',
-    headers: { 'Authorization': TOKEN },
+    url: API_ENDPOINT + 'users/' + search + '/repos',
+    headers: { 'Authorization': localStorage.getItem('access_token') },
     success: function (response) {
-      localStorage.setItem('username', username);
       // Format the data
       var myarray = ['name', 'url', 'open_issues', 'default_branch'];
       var set = [];
@@ -86,6 +115,33 @@ function getUserRepo(username) {
         alert('User not found');
     },
     });
+    return false;
+}
+function createIssue() {
+  $('#success').removeClass('d-block').addClass('d-none').html('');
+  var title = $('#title').val();
+  var body = $('#body').val();
+  var repoName = localStorage.getItem('repo');
+  var username = localStorage.getItem('username');
+  
+  $.ajax({
+    type: 'POST',
+    url: API_ENDPOINT + 'repos/' + username + '/' + repoName + '/issues',
+    headers: { 'Authorization': localStorage.getItem('access_token') },
+    data: JSON.stringify({
+      title: title, 
+      body: body
+    }),
+    success: function (response) {
+      $('#title, #body').val('');
+      $('#success').removeClass('d-none').addClass('d-block').html('Issue has been created successfully!');
+      getUserRepo(username);
+    },
+    error: function () {
+      console.log('some error occured while creating issue');
+      alert('Issue not created due to some technical issue.');
+    },
+  });
   return false;
 }
 
@@ -116,32 +172,4 @@ function listRepo(response) {
   } );
 
   $('#userRepoList').removeClass('d-none').addClass('d-block');
-}
-
-function createIssue() {
-  $('#success').removeClass('d-block').addClass('d-none').html('');
-  var title = $('#title').val();
-  var body = $('#body').val();
-  var repoName = localStorage.getItem('repo');
-  var username = localStorage.getItem('username');
-  
-  $.ajax({
-    type: 'POST',
-    url: API_ENDPOINT + 'repos/' + username + '/' + repoName + '/issues',
-    headers: { 'Authorization': TOKEN },
-    data: JSON.stringify({
-      title: title, 
-      body: body
-    }),
-    success: function (response) {
-      $('#title, #body').val('');
-      $('#success').removeClass('d-none').addClass('d-block').html('Issue has been created successfully!');
-      getUserRepo(username);
-    },
-    error: function () {
-      console.log('some error occured while creating issue');
-      alert('Issue not created due to some technical issue.');
-    },
-  });
-  return false;
 }
